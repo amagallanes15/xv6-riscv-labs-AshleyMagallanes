@@ -1,31 +1,43 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
-
-char *argv[] = { "time1", "matmul" , 0 };
+char *argv1[] = {}; 
 
 int
-main(void)
+main(int argc, char **argv)
+//main(void)
 {
+  //SHIFTING
+  for(int i=1; i<sizeof(argv); i++){
+  	argv1[i-1] = argv[i];
+  } 
+  //adding 0 to the end
+  argv1[sizeof(argv)]=0;
+  //CALLING UPTIME --before fork()
+  int time1=uptime();
+  printf("Time: %d\n", time1);
   int pid = fork();
+  
+  //error
   if(pid < 0){
       printf("time1: fork failed\n");
       exit(1);
+      
+  //child
   }else if(pid == 0){
   //CALLING EXEC
-      exec("/bin/time1", argv);
-  
+      exec( argv1[0] , argv1);
       printf("time1: exec time failed\n");
       exit(1);
-  //CALLING WAIT
+
+  //parent
   }else{
-  
-      //CALLING UPTIME
-      printf("Time: %d\n", uptime());
+      //CALLING WAIT--waiting for child process
       int wpid = wait((int *) 0);
       
-      //CALLING UPTIME
-      printf("elapsed time: %d\n", uptime());
+      //CALLING UPTIME --after wait()
+      printf("elapsed time: %d\n", uptime()-time1);
+      
       if(wpid == pid){
         // the shell exited; restart it.
         exit(0);
@@ -37,7 +49,6 @@ main(void)
       }
     
   }
-  
   
   exit(0);
 }
