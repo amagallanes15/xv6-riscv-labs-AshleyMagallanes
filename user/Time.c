@@ -15,7 +15,6 @@ main(int argc, char **argv)
   argv1[sizeof(argv)]=0;
   //CALLING UPTIME --before fork()
   int time1=uptime();
-  printf("Time: %d\n ticks", time1);
   int pid = fork();
   
   //error
@@ -33,11 +32,11 @@ main(int argc, char **argv)
   //parent
   }else{
       //CALLING WAIT--waiting for child process
-      int wpid = wait((int *) 0);
+      int wpid = wait2((int *) 0, ???????????????);
       
       //CALLING UPTIME --after wait()
       int time2 = uptime();
-      printf("elapsed time: %d ticks\n", time2-time1);
+      printf("elapsed time: %d ticks, cpu time: %d ticks, %d CPU\n", time2-time1, ???, ??);
       
       if(wpid == pid){
         // the shell exited; restart it.
