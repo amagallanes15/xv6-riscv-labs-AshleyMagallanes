@@ -1,7 +1,7 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
-char *argv1[] = {}; 
+char *argv2[] = {}; 
 
 int
 main(int argc, char **argv)
@@ -9,13 +9,13 @@ main(int argc, char **argv)
 {
   //SHIFTING
   for(int i=1; i<sizeof(argv); i++){
-  	argv1[i-1] = argv[i];
+  	argv2[i-1] = argv[i];
   } 
   //adding 0 to the end
-  argv1[sizeof(argv)]=0;
+  argv2[sizeof(argv)]=0;
   //CALLING UPTIME --before fork()
   int time1=uptime();
-  printf("Time: %d\n ticks", time1);
+  printf("Time: %d ticks\n", time1);
   int pid = fork();
   
   //error
@@ -26,7 +26,7 @@ main(int argc, char **argv)
   //child
   }else if(pid == 0){
   //CALLING EXEC
-      exec( argv1[0] , argv1);
+      exec( argv2[0] , argv2);
       printf("time1: exec time failed\n");
       exit(1);
 
@@ -47,8 +47,7 @@ main(int argc, char **argv)
         exit(1);
       } else {
         // it was a parentless process; do nothing.
-      }
-    
+      } 
   }
   
   exit(0);

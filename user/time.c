@@ -2,6 +2,7 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 #include "kernel/pstat.h"
+
 char *argv1[] = {}; 
 struct rusage r;
 
@@ -34,11 +35,13 @@ main(int argc, char **argv)
   //parent
   }else{
       //CALLING WAIT--waiting for child process
-      int wpid = wait2((int *) 0, r);
+      int wpid = wait2((int *) 0, &r);
       
       //CALLING UPTIME --after wait()
       int time2 = uptime();
-      printf("elapsed time: %d ticks, cpu time: %d ticks, %d CPU\n", time2-time1, r.cputime, (r.cputime*100)/time2-time1);
+      int elapsedTime = time2-time1;
+      //Printing the cpu time and details
+      printf("elapsed time: %d ticks, cpu time: %d ticks, %d% CPU\n", elapsedTime, r.cputime, (r.cputime*100)/elapsedTime);
       
       if(wpid == pid){
         // the shell exited; restart it.

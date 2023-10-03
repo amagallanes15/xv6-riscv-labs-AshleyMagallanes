@@ -438,7 +438,7 @@ wait2(uint64 addr, uint64 addr2)
   int havekids, pid;
   struct proc *p = myproc();
   
-  struct rusage *cru;
+  struct rusage cru;
 
   acquire(&wait_lock);
 
@@ -454,21 +454,19 @@ wait2(uint64 addr, uint64 addr2)
         if(np->state == ZOMBIE){
           // Found one.
           pid = np->pid;
-          cru->cputime = np->cputime;
-          //copying status
+          //initializing the cputime pointer
+          cru.cputime = np->cputime;
+          //copying rusage form kernel to the user
+          copyout(p->pagetable, addr2, (char *)&cru,
+                                  sizeof(cru));
+          //copying status form kernel to the user
           if(addr != 0 && copyout(p->pagetable, addr, (char *)&np->xstate,
                                   sizeof(np->xstate)) < 0) {
             release(&np->lock);
             release(&wait_lock);
             return -1;
           }
-          //copying rusage
-          if(addr != 0 && copyout(p->pagetable, addr2, (char *)&cru,
-                                  sizeof(cru)) < 0) {
-            release(&np->lock);
-            release(&wait_lock);
-            return -1;
-          }
+
           freeproc(np);
           release(&np->lock);
           release(&wait_lock);
