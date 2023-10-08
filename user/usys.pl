@@ -14,6 +14,7 @@ sub entry {
     print " ecall\n";
     print " ret\n";
 }
+
 	
 entry("fork");
 entry("exit");
@@ -37,3 +38,4 @@ entry("sbrk");
 entry("sleep");
 entry("uptime");
 entry("getprocs");
+entry("wait2");
