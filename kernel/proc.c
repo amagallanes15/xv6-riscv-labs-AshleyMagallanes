@@ -247,7 +247,7 @@ userinit(void)
 
   p->state = RUNNABLE;
   //Initializing readytime field to current time
-  myproc()->readytime = sys_uptime();
+  p->readytime = sys_uptime();
 
   release(&p->lock);
 }
@@ -319,7 +319,7 @@ fork(void)
   acquire(&np->lock);
   np->state = RUNNABLE;
   //Initializing readytime field to current time
-  myproc()->readytime = sys_uptime();
+  np->readytime = sys_uptime();
   release(&np->lock);
 
   return pid;
@@ -563,7 +563,7 @@ yield(void)
   acquire(&p->lock);
   p->state = RUNNABLE;
   //Initializing readytime field to current time
-  myproc()->readytime = sys_uptime();
+  p->readytime = sys_uptime();
   sched();
   release(&p->lock);
 }
@@ -633,7 +633,7 @@ wakeup(void *chan)
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
         //Initializing readytime field to current time
-  	myproc()->readytime = sys_uptime();
+  	p->readytime = sys_uptime();
       }
       release(&p->lock);
     }
@@ -656,7 +656,7 @@ kill(int pid)
         // Wake process from sleep().
         p->state = RUNNABLE;
         //Initializing readytime field to current time
-  	myproc()->readytime = sys_uptime();
+  	p->readytime = sys_uptime();
       }
       release(&p->lock);
       return 0;
