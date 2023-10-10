@@ -120,5 +120,24 @@ sys_getprocs(void)
 
   if (argaddr(0, &addr) < 0)
     return -1;
+    //modify to also retrieve and print priority field
+    
   return(procinfo(addr));
+}
+
+//gets the priority field
+uint64
+sys_getpriority(void){
+	//uint64 priority;
+	//if(argaddr(0, &priority) < 0)
+	//	return -1;
+	return myproc()->priority;
+}
+//sets the priority field
+uint64
+sys_setpriority(uint64 newPriority){
+	if(newPriority < 0)
+		return -1;
+	myproc()->priority = newPriority;
+	return 0;	
 }

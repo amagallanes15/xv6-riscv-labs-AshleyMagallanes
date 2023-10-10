@@ -1,6 +1,7 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
+#include "kernel/param.h"
 #include "kernel/pstat.h"
 
 char *argv1[] = {}; 
@@ -41,7 +42,7 @@ main(int argc, char **argv)
       int time2 = uptime();
       int elapsedTime = time2-time1;
       //Printing the cpu time and details
-      printf("elapsed time: %d ticks, cpu time: %d ticks, %d% CPU\n", elapsedTime, r.cputime, (r.cputime*100)/elapsedTime);
+      printf("elapsed time: %d ticks, cpu time: %d ticks, %d% CPU\n", elapsedTime, r.cputime, r.cputime*100/elapsedTime);
       
       if(wpid == pid){
         // the shell exited; restart it.

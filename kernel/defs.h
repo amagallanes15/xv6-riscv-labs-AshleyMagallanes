@@ -139,6 +139,8 @@ int             argstr(int, char*, int);
 int             argaddr(int, uint64 *);
 int             fetchstr(uint64, char*, int);
 int             fetchaddr(uint64, uint64*);
+//used to get current time in kernel/ps
+uint64 		sys_uptime(void);
 void            syscall();
 
 // trap.c
