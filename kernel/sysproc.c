@@ -128,9 +128,6 @@ sys_getprocs(void)
 //gets the priority field
 uint64
 sys_getpriority(void){
-	//uint64 priority;
-	//if(argaddr(0, &priority) < 0)
-	//	return -1;
 	return myproc()->priority;
 }
 //sets the priority field
