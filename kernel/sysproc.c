@@ -135,9 +135,10 @@ sys_getpriority(void){
 }
 //sets the priority field
 uint64
-sys_setpriority(uint64 newPriority){
-	if(newPriority < 0)
-		return -1;
+sys_setpriority(void){
+	int newPriority;  
+  	if (argint(0, &newPriority) < 0)
+    		return -1;
 	myproc()->priority = newPriority;
 	return 0;	
 }
