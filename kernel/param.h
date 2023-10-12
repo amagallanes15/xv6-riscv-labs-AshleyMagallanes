@@ -11,5 +11,8 @@
 #define NBUF         (MAXOPBLOCKS*3)  // size of disk block cache
 #define FSSIZE       1000  // size of file system in blocks
 #define MAXPATH      128   // maximum file path name
+#define RR 0		//constant for round robin scheduling method
+#define PRIORITY 1	//constant for priority scheduling method
+#define SCHEDULEPRIORITY PRIORITY //setting the one we are using
 
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };

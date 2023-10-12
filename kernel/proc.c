@@ -13,6 +13,8 @@ struct proc proc[NPROC];
 
 struct proc *initproc;
 
+int schedulepolicy = SCHEDULEPRIORITY;
+
 int nextpid = 1;
 struct spinlock pid_lock;
 
@@ -506,25 +508,47 @@ scheduler(void)
   
   c->proc = 0;
   for(;;){
-    // Avoid deadlock by ensuring that devices can interrupt.
-    intr_on();
+  	//following Round Robin
+  	if(schedulepolicy == 0){
+  		// Avoid deadlock by ensuring that devices can interrupt.
+	    intr_on();
+	    for(p = proc; p < &proc[NPROC]; p++) {
+	      acquire(&p->lock);
+	      if(p->state == RUNNABLE) {
+		// Switch to chosen process.  It is the process's job
+		// to release its lock and then reacquire it
+		// before jumping back to us.
+		p->state = RUNNING;
+		c->proc = p;
+		swtch(&c->context, &p->context);
 
-    for(p = proc; p < &proc[NPROC]; p++) {
-      acquire(&p->lock);
-      if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
+		// Process is done running for now.
+		// It should have changed its p->state before coming back.
+		c->proc = 0;
+	      }
+	      release(&p->lock);
+	    }
+  	}else{
+  	//following Priority (check priority and that it is a runnable process)
+  	//check age???? older gets processed first?
+  	    intr_on();
+	    for(p = proc; p < &proc[NPROC]; p++) {
+	      acquire(&p->lock);
+	      if(p->state == RUNNABLE && p->priority == 0) {
+		// Switch to chosen process.  It is the process's job
+		// to release its lock and then reacquire it
+		// before jumping back to us.
+		p->state = RUNNING;
+		c->proc = p;
+		swtch(&c->context, &p->context);
 
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-      }
-      release(&p->lock);
-    }
+		// Process is done running for now.
+		// It should have changed its p->state before coming back.
+		c->proc = 0;
+	      }
+	      release(&p->lock);
+	    }
+  	}
   }
 }
 
@@ -538,6 +562,7 @@ scheduler(void)
 void
 sched(void)
 {
+
   int intena;
   struct proc *p = myproc();
 
@@ -741,6 +766,10 @@ procinfo(uint64 addr)
     procinfo.pid = p->pid;
     procinfo.state = p->state;
     procinfo.size = p->sz;
+    procinfo.priority = p->priority;
+    procinfo.readytime = p->readytime;
+    procinfo.cputime = p->cputime;
+    
     if (p->parent)
       procinfo.ppid = (p->parent)->pid;
     else
