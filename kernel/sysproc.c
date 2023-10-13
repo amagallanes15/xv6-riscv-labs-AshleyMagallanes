@@ -133,9 +133,13 @@ sys_getpriority(void){
 //sets the priority field
 uint64
 sys_setpriority(void){
+	printf("Entering sys_setpriority\n");
 	int newPriority;  
-  	if (argint(0, &newPriority) < 0)
+  	if (argint(0, &newPriority) < 0){
+  		printf("Error setpriority\n");
     		return -1;
+    	}
 	myproc()->priority = newPriority;
+	printf("Succesful return\n");
 	return 0;	
 }
