@@ -34,7 +34,6 @@ main(int argc, char **argv)
     }else{
     	printf("%d\t%s\t%l\t\t%d\t\t%d\t\t%d\t%s\n", uproc[i].pid, state,
                    uproc[i].size, uproc[i].priority,uproc[i].cputime,uproc[i].ppid,uproc[i].name);
-                   //use getpriority?
     }
                    
   }

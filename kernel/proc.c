@@ -14,6 +14,7 @@ struct proc proc[NPROC];
 struct proc *initproc;
 
 int schedulepolicy = SCHEDULEPRIORITY;
+int agepriority;
 
 int nextpid = 1;
 struct spinlock pid_lock;
@@ -530,11 +531,17 @@ scheduler(void)
 	    }
   	}else{
   	//following Priority (check priority and that it is a runnable process)
-  	//check age???? older gets processed first?
+            //obtaining the max priority to run first
+  	    int maxpriority =0;
+  	    for(p = proc; p < &proc[NPROC]; p++) {
+  	    	if(p->priority > maxpriority){
+  	    		maxpriority = p->priority;
+  	    	}
+  	    }
   	    intr_on();
 	    for(p = proc; p < &proc[NPROC]; p++) {
 	      acquire(&p->lock);
-	      if(p->state == RUNNABLE && p->priority == 0) {
+	      if(p->state == RUNNABLE && p->priority == maxpriority) {
 		// Switch to chosen process.  It is the process's job
 		// to release its lock and then reacquire it
 		// before jumping back to us.
