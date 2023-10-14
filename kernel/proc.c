@@ -507,6 +507,8 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   
+  //struct proc *maxproc;
+  
   c->proc = 0;
   for(;;){
   	//following Round Robin
@@ -546,11 +548,6 @@ scheduler(void)
 	  	release(&p->lock);
   	    }
   
-  	    /*for(p = proc; p < &proc[NPROC]; p++) {
-  	    	if(p->priority > maxpriority){
-  	    		maxpriority = p->priority;
-  	    	}
-  	    }*/
   	    intr_on();
 	    for(p = proc; p < &proc[NPROC]; p++) {
 	      acquire(&p->lock);
@@ -568,6 +565,32 @@ scheduler(void)
 	      }
 	      release(&p->lock);
 	    }
+	    /*maxproc = proc;
+	    int maxeffectivepriority = 0;
+	    for(p = proc; p < &proc[NPROC]; p++) {
+  	    	acquire(&p->lock);
+  	    	if(p->state == RUNNABLE){
+	  	    	int age = sys_uptime()-p->readytime;
+	  	    	if(p->priority + (age) > maxeffectivepriority){
+	  	    		maxeffectivepriority = p->priority + (age);
+	  	    		maxproc = p;	
+	  	    	}
+	  	    	
+	  	}
+	  	release(&p->lock);
+  	    }
+  	    intr_on();
+  	    acquire(&p->lock);
+	    if(maxproc->state == RUNNABLE) {
+		maxproc->state = RUNNING;
+		c->proc = maxproc;
+		swtch(&c->context, &maxproc->context);
+
+		// Process is done running for now.
+		// It should have changed its p->state before coming back.
+		c->proc = 0;
+	   }
+	   release(&p->lock);*/
   	}
   }
 }
