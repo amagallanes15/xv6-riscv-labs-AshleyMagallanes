@@ -27,6 +27,7 @@ int sleep(int);
 int uptime(void);
 int getprocs(struct pstat*);
 int setpriority(int);
+int getpriority(void);
 int wait2(int*, struct rusage*);
 
 // ulib.c

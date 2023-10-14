@@ -141,6 +141,8 @@ UPROGS=\
 	$U/_matmul\
 	$U/_time\
 	$U/_pexec\
+	$U/_getpriority\
+	$U/_setpriority\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
