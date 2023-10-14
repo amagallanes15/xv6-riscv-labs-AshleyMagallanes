@@ -507,7 +507,7 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   
-  //struct proc *maxproc;
+  struct proc *maxproc;
   
   c->proc = 0;
   for(;;){
@@ -531,12 +531,12 @@ scheduler(void)
 	      }
 	      release(&p->lock);
 	    }
-  	}else{
-  	//following Priority (check priority and that it is a runnable process)
+  	}else{ 
+  	//This was my previous priority scheduler before discovering that I couldn't run multiple arguments!
             //obtaining the max priority to run first
             //effective priority + (curent time - readytime)
             //longer wait the higher priority 
-  	    int maxeffectivepriority = 0;
+  	    /*int maxeffectivepriority = 0;
   	    for(p = proc; p < &proc[NPROC]; p++) {
   	    	acquire(&p->lock);
   	    	if(p->state == RUNNABLE){
@@ -564,14 +564,17 @@ scheduler(void)
 		c->proc = 0;
 	      }
 	      release(&p->lock);
-	    }
-	    /*maxproc = proc;
+	    }*/
+//following Priority (check priority and age)
+	    maxproc = proc;
 	    int maxeffectivepriority = 0;
+	    //finding the process with the most effective priority
 	    for(p = proc; p < &proc[NPROC]; p++) {
   	    	acquire(&p->lock);
   	    	if(p->state == RUNNABLE){
 	  	    	int age = sys_uptime()-p->readytime;
 	  	    	if(p->priority + (age) > maxeffectivepriority){
+	  	    		//also taking into consideration the age policy
 	  	    		maxeffectivepriority = p->priority + (age);
 	  	    		maxproc = p;	
 	  	    	}
@@ -580,17 +583,17 @@ scheduler(void)
 	  	release(&p->lock);
   	    }
   	    intr_on();
-  	    acquire(&p->lock);
+  	    acquire(&maxproc->lock);
+  	    //running the process that had the most effective priority
 	    if(maxproc->state == RUNNABLE) {
 		maxproc->state = RUNNING;
 		c->proc = maxproc;
 		swtch(&c->context, &maxproc->context);
-
 		// Process is done running for now.
 		// It should have changed its p->state before coming back.
 		c->proc = 0;
 	   }
-	   release(&p->lock);*/
+	   release(&maxproc->lock);
   	}
   }
 }

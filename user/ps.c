@@ -28,7 +28,7 @@ main(int argc, char **argv)
     state = states[uproc[i].state];
     //RUNNABLE state so print process age (current time - ready time)
     if(uproc[i].state == RUNNABLE) { 
-    	  printf("%d\t%s\t%l\t%d\t%d\t%d\t\t%d\t%s\n", uproc[i].pid, state,
+    	  printf("%d\t%s\t%l\t%d\t%d\t\t%d\t\t%d\t%s\n", uproc[i].pid, state,
                    uproc[i].size, (uptime() - uproc[i].readytime) ,uproc[i].priority, 		uproc[i].cputime,uproc[i].ppid,uproc[i].name);
     //NOT RUNNABLE so don't print age               
     }else{
