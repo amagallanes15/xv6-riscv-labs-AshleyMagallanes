@@ -141,3 +141,16 @@ sys_setpriority(void){
 	myproc()->priority = newPriority;
 	return 0;	
 }
+
+uint64
+sys_freepmem(void){
+	void *address;
+	
+	address = kalloc();
+	if(address == 0){
+		return 0;
+	}
+	
+	kfree(address);
+	return (uint64)address;
+}

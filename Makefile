@@ -143,6 +143,7 @@ UPROGS=\
 	$U/_pexec\
 	$U/_getpriority\
 	$U/_setpriority\
+	$U/_free\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

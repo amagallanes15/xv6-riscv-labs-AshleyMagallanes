@@ -29,6 +29,7 @@ int getprocs(struct pstat*);
 int setpriority(int);
 int getpriority(void);
 int wait2(int*, struct rusage*);
+uint64 freepmem(void);
 
 // ulib.c
 int stat(const char*, struct stat*);
