@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+//#include "kalloc.h"
 
 uint64
 sys_exit(void)
@@ -144,13 +145,6 @@ sys_setpriority(void){
 
 uint64
 sys_freepmem(void){
-	void *address;
-	
-	address = kalloc();
-	if(address == 0){
-		return 0;
-	}
-	
-	kfree(address);
-	return (uint64)address;
+	int freePages = freeCount() * 4096;
+	return freePages;
 }
