@@ -107,3 +107,9 @@ sys_getprocs(void)
     return -1;
   return(procinfo(addr));
 }
+
+uint64
+sys_freepmem(void){
+	int freePages = freeCount() * 4096;
+	return freePages;
+}
