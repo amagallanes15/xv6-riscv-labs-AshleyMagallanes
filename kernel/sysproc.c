@@ -50,13 +50,13 @@ sys_sbrk(void)
   
   //if(growproc(n) < 0)
     //return -1;
-    
+
   int newsz = addr + n;
-  //allocate more virtual mem
-  myproc()->sz = newsz;
-  
-  if(newsz < TRAPFRAME)
+  if(newsz < TRAPFRAME){
+  	//allocate more virtual mem
+  	myproc()->sz = newsz;
   	return addr;
+  }
   return -1;
 }
 
