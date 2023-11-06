@@ -52,6 +52,9 @@ sys_sbrk(void)
     //return -1;
     
   int newsz = addr + n;
+  //allocate more virtual mem
+  myproc()->sz = newsz;
+  
   if(newsz < TRAPFRAME)
   	return addr;
   return -1;
