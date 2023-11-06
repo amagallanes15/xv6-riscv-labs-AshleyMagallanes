@@ -47,9 +47,14 @@ sys_sbrk(void)
   if(argint(0, &n) < 0)
     return -1;
   addr = myproc()->sz;
-  if(growproc(n) < 0)
-    return -1;
-  return addr;
+  
+  //if(growproc(n) < 0)
+    //return -1;
+    
+  int newsz = addr + n;
+  if(newsz < TRAPFRAME)
+  	return addr;
+  return -1;
 }
 
 uint64
@@ -108,6 +113,7 @@ sys_getprocs(void)
   return(procinfo(addr));
 }
 
+//calls the freeCount method implemented in kalloc.c
 uint64
 sys_freepmem(void){
 	int freePages = freeCount() * 4096;

@@ -67,6 +67,26 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
+    
+  /*//Homework 4 (task 3)
+  }else if(r_scause() == 5 || r_scause() == 7)
+  	//checking if the faulting adress is valid
+  	if(r_stval() >= p->sz){
+  		p->killed = 1;
+  		printf("usertrap(): invalid memory address");
+  	}else{
+  		//allocate physical frame memory
+  		void *physical_mem = kalloc();
+  		if(physical_mem){
+  			//clear contents of page
+  			mappages(p->pagetable, PGROUNDDOWN(r_stval()), PGSIZE, (uint64)physical_mem, PTE_W | PTE_X | PTE_R);
+  			return;
+  		}else if(physical_mem == 0){
+  			printf("usertrap(): no more memory");
+  			p->killed = 1;
+  		}
+  	}
+  */
   } else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
     printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
