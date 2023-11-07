@@ -71,17 +71,21 @@ usertrap(void)
   //Homework 4 (task 3)
   } else if(r_scause() == 13 || r_scause() == 15){
   	//checking if the faulting address (stval register) is valid
-  	//if(r_stval() >= p->sz && r_stval() < p->trapframe->sp){
-  	if(r_stval() >= p->sz){
-  	
+  	if(r_stval() < p->sz){
+  		//printf("usertrap(): aaa\n");
   		//allocate physical frame memory
   		void *physical_mem = kalloc();
 
 		//if allocating memory was done correctly
   		if(physical_mem){
+  			
   		//maps virtual page to physical memory and inserts to pagetable
-  			mappages(p->pagetable, PGROUNDDOWN(r_stval()), PGSIZE, (uint64)physical_mem, (PTE_R | PTE_W | PTE_X | PTE_U));
-  			return;
+  			if(mappages(p->pagetable, PGROUNDDOWN(r_stval()), PGSIZE, (uint64)physical_mem, (PTE_R | PTE_W | PTE_X | PTE_U)) < 0){ 
+  				kfree(physical_mem);
+  				printf("mappages didn't work\n");
+  				p->killed = 1;
+  				exit(-1);
+  			}
   			
   		}else{
 			printf("usertrap(): no more memory\n");

@@ -8,9 +8,9 @@ int main(int argc, char *argv[]) {
     }
     uint start = atoi(argv[1]);
     uint limit = atoi(argv[2]);
-    uint increment = atoi(argv[3]);
+    uint increment = atoi(argv[1]);
     uint i;
-    // uint j;
+    uint j;
     int *array;
     for (i=start; i<=limit; i+=increment) {
 	printf("allocating %p mebibytes\n", i); 
@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
             printf("malloc failed\n");
 	    exit(-1);
         }
-/*	for (j = 0; j <= i*1024*1024/4; j++)
+	for (j = 0; j <= i*1024*1024/4; j++)
 	    array[j] = j;
-	    */
+	    
 	sleep(50);
 	printf("freeing %p mebibytes\n", i); 
 	free(array);
