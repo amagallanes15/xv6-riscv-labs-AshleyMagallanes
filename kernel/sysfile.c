@@ -512,7 +512,7 @@ break;
 }
 // Fill in struct mmr fields for new mapped region
 if (newmmr) {
-/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = /**** your code goes here ****/
+/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = 0;/**** your code goes here ****/
 newmmr->valid = 1;
 newmmr->addr = start_addr;
 newmmr->length = p->cur_max - start_addr;

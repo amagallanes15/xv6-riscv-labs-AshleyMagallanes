@@ -233,9 +233,7 @@ void
 userinit(void)
 {
   struct proc *p;
-  //HMW5------------------
-  p->cur_max = MAXVA – 2*PGSIZE;
-  //-----------------------
+  
   p = allocproc();
   initproc = p;
   
@@ -252,8 +250,15 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
+  
+  //HMW5------------------
+  //p->cur_max = MAXVA – 2*PGSIZE;
+  p->cur_max = MAXVA - 2 * PGSIZE;
+  //-----------------------
 
   release(&p->lock);
+  
+  
 }
 
 // Grow or shrink user memory by n bytes.
@@ -297,6 +302,9 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
+  
+  //HMW5- Also propagate cur_max to the child process in fork().
+  np->cur_max = p->cur_max;
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -694,14 +702,14 @@ procinfo(uint64 addr)
 }
 
 //HMW5 Functions---------------------------------------------------------
-/ Initialize mmr_list
+//Initialize mmr_list
 void
 mmrlistinit(void)
 {
 struct mmr_list *pmmrlist;
 initlock(&listid_lock,"listid");
 for (pmmrlist = mmr_list; pmmrlist < &mmr_list[NPROC*MAX_MMR]; pmmrlist++) {
-initlock(&pmmrlist->lock, "mmrlist");
+initlock(&pmmrlist->lock, "mrlist");
 pmmrlist->valid = 0;
 }
 }

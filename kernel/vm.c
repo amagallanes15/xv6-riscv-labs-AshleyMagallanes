@@ -442,8 +442,10 @@ mapvpages(pagetable_t pagetable, uint64 va, uint64 size)
 {
 uint64 a, last;
 pte_t *pte;
-if(size == 0)
-panic("mappages: size");a = PGROUNDDOWN(va);
+if(size == 0){
+panic("mappages: size");
+}
+a = PGROUNDDOWN(va);
 last = PGROUNDDOWN(va + size - 1);
 for(;;){
 if((pte = walk(pagetable, a, 1)) == 0)
