@@ -496,7 +496,8 @@ int flags;
 struct proc *p = myproc();
 struct mmr *newmmr = 0;
 uint64 start_addr;
-/* Add error checking for length, prot, and flags arguments */
+//HMW5----------------------
+//error checking for length, prot, and flags arguments 
 if (argaddr(1, &length) < 0)
 return -1;
 if (argint(2, &prot) < 0)
@@ -512,7 +513,7 @@ break;
 }
 // Fill in struct mmr fields for new mapped region
 if (newmmr) {
-/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = 0;/**** your code goes here ****/
+/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = p->sz - p->cur_max;/**** your code goes here ****/
 newmmr->valid = 1;
 newmmr->addr = start_addr;
 newmmr->length = p->cur_max - start_addr;
@@ -581,10 +582,12 @@ return 0;
 uint64
 sys_munmap(void)
 {
-uint64 addr;
-uint64 length;
-/****
-Your code goes here
-****/
+	uint64 addr;
+	uint64 length;
+
+	addr = 0x10000000;
+	length = 4096;
+	munmap(addr, length);
+	return 0;
 }
 //----------------------------------------------------------------------------------------

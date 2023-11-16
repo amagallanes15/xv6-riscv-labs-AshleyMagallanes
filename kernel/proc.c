@@ -252,7 +252,6 @@ userinit(void)
   p->state = RUNNABLE;
   
   //HMW5------------------
-  //p->cur_max = MAXVA – 2*PGSIZE;
   p->cur_max = MAXVA - 2 * PGSIZE;
   //-----------------------
 

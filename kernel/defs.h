@@ -177,7 +177,7 @@ uint64          walkaddr(pagetable_t, uint64);
 int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
-//HMW5
+//--------HMW5
 int		mapvpages(pagetable_t, uint64, uint64);
 
 // plic.c
@@ -185,6 +185,10 @@ void            plicinit(void);
 void            plicinithart(void);
 int             plic_claim(void);
 void            plic_complete(int);
+
+//private.c -------------HMW5
+uint64   	mmap(uint64, uint64, char *, int, int);
+int 		munmap(uint64, uint64);
 
 // virtio_disk.c
 void            virtio_disk_init(void);
