@@ -187,8 +187,8 @@ int             plic_claim(void);
 void            plic_complete(int);
 
 //private.c -------------HMW5
-uint64   	mmap(uint64, uint64, char *, int, int);
-int 		munmap(uint64, uint64);
+//void*   mmap(void *, uint64, int, int, int, int);
+//int 	munmap(void *, uint64);
 
 // virtio_disk.c
 void            virtio_disk_init(void);

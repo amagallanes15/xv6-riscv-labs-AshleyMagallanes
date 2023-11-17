@@ -27,6 +27,10 @@ int uptime(void);
 int getprocs(struct pstat*);
 uint64 freepmem(void);
 
+//HMW5------------
+void*   mmap(void *, uint64, int, int, int, int);
+int 	munmap(void *, uint64);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

@@ -513,7 +513,7 @@ break;
 }
 // Fill in struct mmr fields for new mapped region
 if (newmmr) {
-/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = p->sz - p->cur_max;/**** your code goes here ****/
+/* Calculate the start address of the new mapped region, make sure it starts on a page boundary */start_addr = PGROUNDDOWN(p->cur_max - length);
 newmmr->valid = 1;
 newmmr->addr = start_addr;
 newmmr->length = p->cur_max - start_addr;
@@ -585,8 +585,10 @@ sys_munmap(void)
 	uint64 addr;
 	uint64 length;
 
-	addr = 0x10000000;
-	length = 4096;
+	if(argaddr(0, &addr) < 0)
+    		return -1;
+	if(argaddr(1, &length) < 0)
+   		 return -1;
 	munmap(addr, length);
 	return 0;
 }

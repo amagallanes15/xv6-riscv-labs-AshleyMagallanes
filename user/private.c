@@ -5,6 +5,7 @@
 
 #define BSIZE 10
 #define MAX 10
+#define NULL 0
 
 typedef struct {
     int buf[BSIZE];
@@ -46,6 +47,7 @@ main(int argc, char *argv[])
 		               PROT_READ | PROT_WRITE,
 			       MAP_ANONYMOUS | MAP_PRIVATE,
 			       -1, 0);
+    //printf("mem mapped");
     buffer->nextin = 0;
     buffer->nextout = 0;
     buffer->num_produced = 0;
