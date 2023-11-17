@@ -28,8 +28,8 @@ int getprocs(struct pstat*);
 uint64 freepmem(void);
 
 //HMW5------------
-void*   mmap(void *, uint64, int, int, int, int);
-int 	munmap(void *, uint64);
+void*   mmap(void*, int, int, int, int, void*);
+int 	munmap(void*, int);
 
 // ulib.c
 int stat(const char*, struct stat*);
