@@ -69,32 +69,43 @@ usertrap(void)
   } else if((which_dev = devintr()) != 0){
     // ok
     
-  //Homework 4 (task 3)
+  //Homework 5 (task 1)
   } else if(r_scause() == 13 || r_scause() == 15){
   	//checking if the faulting address (stval register) is valid
-  	if(r_stval() < p->sz){
-  		
+  	//printf("before fault address\n");
+  	if(r_stval() >= p->sz){
+  		//printf("valid address\n");
   		//check mapped region protection permits operation
   		for(int i=0; i<MAX_MMR; i++){
-  			if(r_scause() == 13){
-  				//read permision not set
-  				if((p->mmr[i].prot & PROT_READ) == 0){
-  					p->killed = 1;
-  					exit(-1);
-  				}
-  			}
-  			if(r_scause() == 15){
-  				//write permision set
-  				if((p->mmr[i].prot & PROT_WRITE) == 0){
-  					p->killed = 1;
-  					exit(-1);
-  				}
-  			}
+  		//printf("inside for\n");
+  			if(p->mmr[i].valid && p->mmr[i].addr < r_stval() && p->mmr[i].addr+p->mmr[i].length > r_stval()){
+	  			if(r_scause() == 13){
+	  			//printf("scause 13\n");
+	  				//read permision not set
+	  				if((p->mmr[i].prot & PROT_READ) == 0){
+	  				//printf("permision not set\n");
+	  					p->killed = 1;
+	  					exit(-1);
+	  				}
+	  			}
+	  			if(r_scause() == 15){
+	  			//printf("scause 15\n");
+	  				//write permision set
+	  				if((p->mmr[i].prot & PROT_WRITE) == 0){
+	  				//printf("permision set\n");
+	  					p->killed = 1;
+	  					exit(-1);
+	  				}
+	  			}
+	  			
+	  		}
   		}  
   		
-  		//allocate physical frame memory
+  		//hmw4--
+  	}
+  	//allocate physical frame memory
   		void *physical_mem = kalloc();
-
+		//printf("allocate mem\n");
 		//if allocating memory was done correctly
   		if(physical_mem){
   			
@@ -111,12 +122,13 @@ usertrap(void)
   			p->killed = 1;
   			exit(-1);
   		}
-  		
-  	}else{
+  	
+  	/*else{
   		printf("usertrap(): invalid memory address\n");
   		p->killed = 1;
   		exit(-1);
-  	}
+  	}*/
+  	
   
   } else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
