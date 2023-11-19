@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "stat.h"
 
 struct spinlock tickslock;
 uint ticks;
@@ -72,7 +73,25 @@ usertrap(void)
   } else if(r_scause() == 13 || r_scause() == 15){
   	//checking if the faulting address (stval register) is valid
   	if(r_stval() < p->sz){
-  		//printf("usertrap(): aaa\n");
+  		
+  		//check mapped region protection permits operation
+  		for(int i=0; i<MAX_MMR; i++){
+  			if(r_scause() == 13){
+  				//read permision not set
+  				if((p->mmr[i].prot & PROT_READ) == 0){
+  					p->killed = 1;
+  					exit(-1);
+  				}
+  			}
+  			if(r_scause() == 15){
+  				//write permision set
+  				if((p->mmr[i].prot & PROT_WRITE) == 0){
+  					p->killed = 1;
+  					exit(-1);
+  				}
+  			}
+  		}  
+  		
   		//allocate physical frame memory
   		void *physical_mem = kalloc();
 
