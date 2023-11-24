@@ -72,32 +72,26 @@ usertrap(void)
   //Homework 5 (task 1)
   } else if(r_scause() == 13 || r_scause() == 15){
   	//checking if the faulting address (stval register) is valid
-  	//printf("before fault address\n");
+
   	if(r_stval() >= p->sz){
-  		//printf("valid address\n");
+  		
   		//check mapped region protection permits operation
   		for(int i=0; i<MAX_MMR; i++){
-  		//printf("inside for\n");
   			if(p->mmr[i].valid && p->mmr[i].addr < r_stval() && p->mmr[i].addr+p->mmr[i].length > r_stval()){
 	  			if(r_scause() == 13){
-	  			//printf("scause 13\n");
 	  				//read permision not set
 	  				if((p->mmr[i].prot & PROT_READ) == 0){
-	  				//printf("permision not set\n");
 	  					p->killed = 1;
 	  					exit(-1);
 	  				}
 	  			}
 	  			if(r_scause() == 15){
-	  			//printf("scause 15\n");
 	  				//write permision set
 	  				if((p->mmr[i].prot & PROT_WRITE) == 0){
-	  				//printf("permision set\n");
 	  					p->killed = 1;
 	  					exit(-1);
 	  				}
 	  			}
-	  			
 	  		}
   		}  
   		
@@ -105,7 +99,6 @@ usertrap(void)
   	}
   	//allocate physical frame memory
   		void *physical_mem = kalloc();
-		//printf("allocate mem\n");
 		//if allocating memory was done correctly
   		if(physical_mem){
   			
