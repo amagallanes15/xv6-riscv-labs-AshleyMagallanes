@@ -102,6 +102,7 @@ usertrap(void)
 		//if allocating memory was done correctly
   		if(physical_mem){
   			
+  			
   		//maps virtual page to physical memory and inserts to pagetable
   			if(mappages(p->pagetable, PGROUNDDOWN(r_stval()), PGSIZE, (uint64)physical_mem, (PTE_R | PTE_W | PTE_X | PTE_U)) < 0){ 
   				kfree(physical_mem);
