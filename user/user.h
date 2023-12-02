@@ -29,6 +29,11 @@ uint64 freepmem(void);
 //HMW5-----------------------
 void* mmap(void*, int, int, int, int, void*);
 int munmap(void*, int);
+//HMW6-----------------------
+int sem_init(int, int, int);
+int sem_destroy(int);
+int sem_wait(int);
+int sem_post(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

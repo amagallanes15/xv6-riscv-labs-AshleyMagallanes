@@ -53,7 +53,6 @@ usertrap(void)
   
   if(r_scause() == 8){
     // system call
-
     if(p->killed)
       exit(-1);
 
@@ -72,7 +71,7 @@ usertrap(void)
   //Homework 5 (task 1)
   } else if(r_scause() == 13 || r_scause() == 15){
   	//checking if the faulting address (stval register) is valid
-
+	//printf("Esteban");
   	if(r_stval() >= p->sz){
   		
   		//check mapped region protection permits operation
