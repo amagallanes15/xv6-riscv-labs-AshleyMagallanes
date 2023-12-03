@@ -14,3 +14,5 @@
 //HMW5--------------
 #define MAX_MMR		10 // maximum number of memory-mapped regions per process
 enum procstate { UNUSED, USED, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
+//HMW6
+#define NSEM         100 // maximum open semaphores per system

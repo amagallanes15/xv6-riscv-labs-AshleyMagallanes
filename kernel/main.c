@@ -44,4 +44,6 @@ main()
   scheduler();   
   //HMW5--------------
   mmrlistinit(); 
+  //HMW6
+  seminit();
 }
