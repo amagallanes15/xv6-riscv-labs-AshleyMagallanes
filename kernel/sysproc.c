@@ -122,3 +122,45 @@ sys_freepmem(void){
 	int freePages = freeCount() * 4096;
 	return freePages;
 }
+
+//HMW6
+int
+sys_sem_init(void){
+	struct semaphore *s;
+	//semaphore failed
+	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
+		return -1;
+	}
+	//initialization
+	return 0;
+}
+int
+sys_sem_destroy(void){
+	struct semaphore *s;
+	//semaphore failed
+	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
+		return -1;
+	}
+	//destroy
+	return 0;
+}
+int
+sys_sem_wait(void){
+	struct semaphore *s;
+	//semaphore failed
+	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
+		return -1;
+	}
+	//wait
+	return 0;
+}
+int
+sys_sem_post(void){
+	struct semaphore *s;
+	//semaphore failed
+	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
+		return -1;
+	}
+	//post
+	return 0;
+}
