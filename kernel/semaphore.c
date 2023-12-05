@@ -30,8 +30,8 @@ int semalloc(void){
 	return -1;
 };
 
-//
-void semdealloc(int index){
+//invalidate entry of given index
+void sedealloc(int index){
 	acquire(&semtable.sem[index].lock);
 	//make sure index arg is valid
 	if(index > -1 && index < NSEM){

@@ -127,21 +127,41 @@ sys_freepmem(void){
 int
 sys_sem_init(void){
 	struct semaphore *s;
+	int addr;
 	//semaphore failed
 	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
 		return -1;
 	}
 	//initialization
+	addr = semalloc();
+	if(copyout(myproc()->pagetable, addr, (char*)s, sizeof(struct semaphore))<0){
+		return -1;
+	}
+	
 	return 0;
 }
 int
 sys_sem_destroy(void){
 	struct semaphore *s;
+	struct semtab semtable;
+	int addr;
 	//semaphore failed
 	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
 		return -1;
 	}
+	//index failed
+	if(argint(0, &addr)<0){
+		return -1;
+	}
 	//destroy
+	acquire(&semtable.lock);
+	
+	if(copyin(myproc()->pagetable, (char*)s, addr, sizeof(struct semaphore))<0){
+		release(&semtable.lock);
+		return -1;
+	}
+	sedealloc(addr);
+	release(&semtable.lock);
 	return 0;
 }
 int
@@ -152,6 +172,17 @@ sys_sem_wait(void){
 		return -1;
 	}
 	//wait
+	acquire(&semtable.lock);
+	if(s > 0){
+		s--;
+		release(&semtable.lock);
+	}else{
+		while(s == 0){
+			sleep(s, &semtable.lock);
+		}
+		s--;
+		release(&semtable.lock);
+	}
 	return 0;
 }
 int
@@ -161,6 +192,17 @@ sys_sem_post(void){
 	if(argstr(0, (void*)&s, sizeof(*s)) < 0){
 		return -1;
 	}
-	//post
+	//wait
+	acquire(&semtable.lock);
+	if(s > 0){
+		s++;
+		release(&semtable.lock);
+	}else{
+		while(s == 0){
+			wakeup(s);
+		}
+		s++;
+		release(&semtable.lock);
+	}
 	return 0;
 }
