@@ -192,16 +192,15 @@ sys_sem_wait(void){
 	acquire(&semtable.sem[addr].lock);
 	//decrement
 	if(semtable.sem[addr].count > 0){
-		semtable.sem[addr].count--;
-		
+		semtable.sem[addr].count--;	
 		release(&semtable.sem[addr].lock);
+		return 0;
 	}else{
 		while(semtable.sem[addr].count == 0){
 			sleep((void*)&semtable.sem[addr], &semtable.sem[addr].lock);
-			release(&semtable.sem[addr].lock);
+			//release(&semtable.sem[addr].lock);
 		}
 		semtable.sem[addr].count--;
-		
 		release(&semtable.sem[addr].lock);
 	}
 	
@@ -217,11 +216,12 @@ sys_sem_post(void){
 	}
 	//get address
 	copyin(myproc()->pagetable, (char*)&addr, s, sizeof(int));
+	
 	acquire(&semtable.sem[addr].lock);
 	//increment
-	
-	wakeup((void*)&semtable.sem[addr]);
 	semtable.sem[addr].count++;
+	wakeup((void*)&semtable.sem[addr]);
+	
 	release(&semtable.sem[addr].lock);
 	
 	return 0;
